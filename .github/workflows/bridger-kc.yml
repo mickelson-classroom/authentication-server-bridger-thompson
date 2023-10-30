@@ -1,0 +1,19 @@
+name: Update keycloak
+env:
+  DUCKDNSTOKEN: ${{ secrets.DUCKDNSTOKEN }}
+  KEYCLOAK_ADMIN_USER: ${{ secrets.KEYCLOAK_ADMIN_USER }}
+  KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+on: [push, workflow_dispatch]
+jobs:
+  deploy-application:
+    runs-on: [ self-hosted ]
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+
+      - name: redeploy application
+        run: |
+          docker compose pull
+          docker compose build
+          docker compose down
+          docker compose up -d
