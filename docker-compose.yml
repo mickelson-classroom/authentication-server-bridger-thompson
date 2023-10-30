@@ -3,12 +3,12 @@ services:
   bridger-kc:
     container_name: bridger-kc
     image: bitnami/keycloak
-    ports:
-      - 8003:8080
+    # ports:
+    #   - 8003:8080
     restart: unless-stopped
     environment:
-      - KEYCLOAK_ADMIN_USER=admin
-      - KEYCLOAK_ADMIN_PASSWORD=password
+      - KEYCLOAK_ADMIN_USER=${KEYCLOAK_ADMIN_USER}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
       - KEYCLOAK_DATABASE_HOST=bridger-kc-db
       - KEYCLOAK_DATABASE_NAME=keycloak
       - KEYCLOAK_DATABASE_USER=keycloak
@@ -24,3 +24,23 @@ services:
       - POSTGRES_DB=keycloak
     volumes:
       - /tmp/postgres:/var/lib/postgresql/data
+
+  bridger-kc-swag:
+    image: lscr.io/linuxserver/swag
+    container_name: bridger-kc-swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+      - URL=bridgerkc.duckdns.org
+      - VALIDATION=duckdns
+      - DUCKDNSTOKEN=${DUCKDNSTOKEN}
+      - STAGING=false
+    volumes:
+      - /home/bridger/data/swag:/config
+      - ./swag-default.conf:/config/nginx/site-confs/default.conf
+    ports:
+      - 0.0.0.0:8003:8080
+    restart: unless-stopped
