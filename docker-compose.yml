@@ -23,7 +23,7 @@ services:
       - POSTGRES_PASSWORD=asdfoinvsdoignas
       - POSTGRES_DB=keycloak
     volumes:
-      - /tmp/postgres:/var/lib/postgresql/data
+      - /home/bridger/data/kcpostgres:/var/lib/postgresql/data
 
   bridger-kc-swag:
     image: lscr.io/linuxserver/swag
@@ -39,8 +39,8 @@ services:
       - DUCKDNSTOKEN=${DUCKDNSTOKEN}
       - STAGING=false
     volumes:
-      - /home/bridger/data/swag:/config
+      - /home/bridger/data/kcswag:/config
       - ./swag-default.conf:/config/nginx/site-confs/default.conf
     ports:
-      - 0.0.0.0:8003:8080
+      - 0.0.0.0:8003:443
     restart: unless-stopped
