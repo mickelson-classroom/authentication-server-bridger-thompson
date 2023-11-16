@@ -13,6 +13,7 @@ services:
       - KEYCLOAK_DATABASE_NAME=keycloak
       - KEYCLOAK_DATABASE_USER=keycloak
       - KEYCLOAK_DATABASE_PASSWORD=asdfoinvsdoignas
+      - KEYCLOAK_EXTRA_ARGS='--proxy edge'
 
   bridger-kc-db:
     image: postgres
